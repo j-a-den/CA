@@ -13,7 +13,6 @@ const journalRoutes = require('./routes/journalRoutes');
 const app = express();
 const PORT = 3000;
 
-app.use(flash());
 
 // View Engine and Middleware
 app.set('view engine', 'ejs');
@@ -25,6 +24,9 @@ app.use(session({
   resave: false,
   saveUninitialized: true
 }));
+app.use(flash());
+app.use(require('./middleware/serviceSecurity'));
+app.use(require('./routes/serviceRoutes'));
 
 app.use(authRoutes);
 app.use(pageRoutes);
@@ -32,4 +34,5 @@ app.use(adminRoutes);
 app.use(petRoutes);
 app.use(journalRoutes);
 
-app.listen(PORT, () => console.log(`App running on http://localhost:${PORT}`));
+if (require.main === module) app.listen(PORT, () => console.log(`App running on http://localhost:${PORT}`));
+module.exports = app;

@@ -1,0 +1,9 @@
+<%- include('partials/serviceHeader', { title: 'My cart' }) %>
+<p><a href="/services">Browse services</a></p>
+<% if (!items.length) { %><p>Your cart is empty.</p><% } else { %>
+<p>Prices and durations are rechecked at checkout. Appointment times are selected on the next screen.</p>
+<div class="table-responsive"><table class="table"><thead><tr><th>Service</th><th>Pet</th><th>Duration</th><th>Cost</th><th>Actions</th></tr></thead><tbody>
+<% for (const item of items) { %><tr><td><%= item.service_name %><% if (!item.is_active || item.owner_id !== session.user.id) { %> <span class="badge text-bg-warning">Unavailable</span><% } %></td><td><%= item.pet_name %></td><td><%= item.session_duration %> min</td><td>$<%= item.cost %></td><td><form method="post" action="/cart/<%= item.cart_id %>/remove"><input type="hidden" name="_csrf" value="<%= csrf %>"><button class="btn btn-outline-danger btn-sm">Remove</button></form></td></tr><% } %>
+</tbody></table></div><p class="fw-bold">Estimated total: $<%= total %></p>
+<% if (items.every(item => item.is_active && item.owner_id === session.user.id)) { %><a class="btn btn-primary" href="/checkout">Proceed to checkout</a><% } else { %><p>Remove unavailable items to continue.</p><% } %><% } %>
+<%- include('partials/serviceFooter') %>

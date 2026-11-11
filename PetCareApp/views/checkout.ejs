@@ -1,0 +1,28 @@
+<%- include('partials/serviceHeader', { title: 'Checkout' }) %>
+<p>Choose a future appointment for each item. Appointments start on whole hours from 9am and must finish by 6pm. All times are Singapore time (UTC+08:00).</p>
+<p>Each booking is considered paid immediately; no payment is collected. Each appointment receives its own invoice.</p>
+<form action="/checkout" method="post">
+  <input type="hidden" name="_csrf" value="<%= csrf %>">
+  <input type="hidden" name="token" value="<%= token %>">
+  <% for (const item of items) { %>
+    <fieldset class="card card-body mb-3" data-booking-item="<%= item.cart_id %>" data-duration="<%= item.session_duration %>">
+      <legend class="h5"><%= item.service_name %> &mdash; <%= item.pet_name %></legend>
+      <p>$<%= item.cost %> &middot; <%= item.session_duration %> minutes</p>
+      <label class="form-label" for="date-<%= item.cart_id %>">Appointment date</label>
+      <input class="form-control mb-3" type="date" id="date-<%= item.cart_id %>" name="dates[item_<%= item.cart_id %>]" required>
+      <label class="form-label" for="hour-<%= item.cart_id %>">Start hour (Singapore time)</label>
+      <select class="form-select" id="hour-<%= item.cart_id %>" name="hours[item_<%= item.cart_id %>]" required disabled>
+        <option value="">Select an hour</option>
+        <% for (let hour = 9; hour < 18; hour++) { %>
+          <option value="<%= String(hour).padStart(2, '0') %>:00" <%= hour * 60 + Number(item.session_duration) > 1080 ? 'disabled' : '' %>><%= hour > 12 ? hour - 12 : hour %>:00 <%= hour >= 12 ? 'pm' : 'am' %></option>
+        <% } %>
+      </select>
+      <small class="text-muted" data-availability-message role="status" aria-live="polite">Select a date to see available hours. Booked hours and hours that would finish after 6pm are disabled.</small>
+      <% if (Number(item.session_duration) > 540) { %><p class="text-danger">This service is longer than the opening hours. Remove it from your cart or contact the administrator.</p><% } %>
+    </fieldset>
+  <% } %>
+  <p class="fw-bold">Total: $<%= total %></p>
+  <button class="btn btn-success">Confirm bookings &mdash; paid by default</button> <a href="/cart">Back to cart</a>
+</form>
+<script src="/bookingAvailability.js" defer></script>
+<%- include('partials/serviceFooter') %>

@@ -9,9 +9,16 @@
       <ul class="navbar-nav ms-auto">
         <% if (session && session.user) { %>
           <% if (session.user.role === 'admin') { %>
+            <li class="nav-item"><a class="nav-link" href="/admin/services">Manage Services</a></li>
+            <li class="nav-item"><a class="nav-link" href="/admin/bookings">All Bookings</a></li>
             <li class="nav-item">
               <a class="nav-link" href="/admin/users">View Users</a>
             </li>
+          <% } %>
+          <% if (session.user.role === 'user') { %>
+            <li class="nav-item"><a class="nav-link" href="/services">Services</a></li>
+            <li class="nav-item"><a class="nav-link" href="/cart">My Cart</a></li>
+            <li class="nav-item"><a class="nav-link" href="/invoices">My Invoices</a></li>
           <% } %>
           
           <li class="nav-item">

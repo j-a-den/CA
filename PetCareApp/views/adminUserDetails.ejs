@@ -48,7 +48,7 @@
                       <% for (let i = 0; i < petJournals.length; i++) { %>
                         <tr>
                           <td><%= i + 1 %></td>
-                          <td><%= petJournals[i].entry_date.toISOString().split('T')[0] %></td>
+                          <td><%= petJournals[i].entry_date %></td>
                           <td><%= petJournals[i].activity %></td>
                           <td><%= petJournals[i].notes %></td>
                         </tr>

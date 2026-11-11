@@ -3,11 +3,12 @@ const petModel = require('../models/petModel');
 const sha256Hash = require('../helpers/hash');
 
 function showSignup(req, res) {
-  res.render('signup', { session: req.session });
+  res.render('signUp', { session: req.session });
 }
 
 function signup(req, res) {
-  const { username, password, name, role, pet_name, species, breed, age } = req.body;
+  const { username, password, name, pet_name, species, breed, age } = req.body;
+  const role = 'user';
   let petImage;
   if (req.file) {
     petImage = req.file.filename;

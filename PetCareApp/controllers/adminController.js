@@ -1,9 +1,29 @@
 const userModel = require('../models/userModel');
 const petModel = require('../models/petModel');
 const journalModel = require('../models/journalModel');
+const bookingModel = require('../models/bookingModel');
+const { singaporeDate, dayRange } = require('../helpers/reportingDate');
 
-function dashboard(req, res) {
-  res.render('adminDashboard', { session: req.session });
+async function dashboard(req, res) {
+  res.set('Cache-Control', 'no-store');
+  const selectedDate = req.query.date === undefined ? singaporeDate() : req.query.date;
+  try {
+    dayRange(selectedDate);
+  } catch (error) {
+    return res.status(400).render('adminDashboard', {
+      session: req.session, selectedDate: '', revenue: null, revenueError: error.message
+    });
+  }
+  try {
+    const revenue = await bookingModel.dailyRevenue(selectedDate);
+    res.render('adminDashboard', { session: req.session, selectedDate, revenue, revenueError: null });
+  } catch (error) {
+    console.error('Daily revenue query failed:', error.code || error.message);
+    res.status(503).render('adminDashboard', {
+      session: req.session, selectedDate, revenue: null,
+      revenueError: 'Unable to load daily revenue. Please try again.'
+    });
+  }
 }
 
 function listUsers(req, res) {

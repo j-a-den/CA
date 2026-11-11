@@ -1,0 +1,9 @@
+<%- include('partials/serviceHeader', { title: 'Pet care services' }) %>
+<% if (!pets.length) { %><p>Add a pet before booking a service. <a href="/pets/new">Add pet</a></p><% } %>
+<% if (!services.length) { %><p>No services are currently available.</p><% } %>
+<div class="row g-3"><% for (const service of services) { %><div class="col-md-6"><article class="card h-100"><div class="card-body">
+<h2 class="h4"><%= service.name %></h2><p style="white-space:pre-wrap"><%= service.description || '' %></p>
+<p>$<%= service.cost %> · <%= service.session_duration %> minutes</p>
+<% if (pets.length) { %><form method="post" action="/cart"><input type="hidden" name="_csrf" value="<%= csrf %>"><input type="hidden" name="service_id" value="<%= service.id %>">
+<label class="form-label" for="pet-<%= service.id %>">Pet</label><select class="form-select mb-3" id="pet-<%= service.id %>" name="pets_id" required><% for (const pet of pets) { %><option value="<%= pet.id %>"><%= pet.name %></option><% } %></select><button class="btn btn-primary">Add to cart</button></form><% } %>
+</div></article></div><% } %></div><%- include('partials/serviceFooter') %>

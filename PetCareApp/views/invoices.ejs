@@ -1,0 +1,4 @@
+<%- include('partials/serviceHeader', { title: 'My invoices' }) %>
+<% if (!invoices.length) { %><p>You have no invoices yet. <a href="/services">Browse services</a></p><% } else { %>
+<div class="table-responsive"><table class="table"><thead><tr><th>Invoice</th><th>Created (SGT)</th><th>Service / pet</th><th>Amount</th><th>Payment</th><th>Booking</th></tr></thead><tbody><% for (const invoice of invoices) { %><tr><td><a href="/invoices/<%= invoice.booking_id %>">INV-<%= String(invoice.booking_id).padStart(6,'0') %></a></td><td><%= invoice.created_at %></td><td><%= invoice.service_name %> / <%= invoice.pet_name %></td><td>$<%= invoice.price %></td><td>Paid</td><td><%= invoice.status %></td></tr><% } %></tbody></table></div><% } %>
+<%- include('partials/serviceFooter') %>

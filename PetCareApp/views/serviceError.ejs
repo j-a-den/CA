@@ -1,0 +1,4 @@
+<%- include('partials/serviceHeader', { title: 'Unable to complete request' }) %>
+<div class="alert alert-danger" role="alert"><%= message %></div><p>Your form may need to be reloaded before trying again.</p>
+<% if (session.user && session.user.role === 'admin') { %><a href="/admin/services">Manage services</a> · <a href="/admin/bookings">All bookings</a><% } else { %><a href="/cart">Review cart</a> · <a href="/checkout">Reload checkout</a> · <a href="/services">Services</a><% } %>
+<%- include('partials/serviceFooter') %>

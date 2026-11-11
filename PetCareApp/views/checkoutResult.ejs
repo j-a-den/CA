@@ -1,0 +1,3 @@
+<%- include('partials/serviceHeader', { title: 'Checkout result' }) %>
+<% if (invoices.length) { %><div class="alert alert-success">Your bookings are confirmed and considered paid. No payment was collected.</div><ul><% for (const invoice of invoices) { %><li><a href="/invoices/<%= invoice.booking_id %>">Invoice INV-<%= String(invoice.booking_id).padStart(6, '0') %></a> — <%= invoice.service_name %>, <%= invoice.pet_name %></li><% } %></ul><% } else { %><p>No recent checkout is available.</p><% } %>
+<a href="/invoices">View all invoices</a><%- include('partials/serviceFooter') %>

@@ -94,7 +94,7 @@
               <td><%= i + 1 %></td>
               <td>
                 <% if (journals[i].entry_date) { %>
-                    <%= journals[i].entry_date.toISOString().split('T')[0] %>
+                    <%= journals[i].entry_date %>
                 <% } else { %>
                     N/A
                 <% } %>
